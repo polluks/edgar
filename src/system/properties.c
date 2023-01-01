@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2019 Parallel Realities
+Copyright (C) 2009-2023 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@ Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
 #include "../audio/audio.h"
 #include "../graphics/animation.h"
 #include "../graphics/sprites.h"
+#include "../init.h"
 #include "error.h"
 #include "pak.h"
 #include "properties.h"
@@ -670,7 +671,7 @@ void setProperty(Entity *e, char *name, char *value)
 			printf("%s has unknown property value %s\n", e->name, name);
 
 			#if DEV == 1
-				exit(0);
+				cleanup(0);
 			#endif
 		}
 	}

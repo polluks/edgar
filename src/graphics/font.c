@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2019 Parallel Realities
+Copyright (C) 2009-2023 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@ Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
 */
 
 #include "../headers.h"
+#include "../init.h"
 #include "../system/pak.h"
 #include "graphics.h"
 
@@ -31,7 +32,7 @@ TTF_Font *loadFont(char *name, int size)
 	{
 		printf("Failed to open Font %s: %s\n", name, TTF_GetError());
 
-		exit(1);
+		cleanup(1);
 	}
 
 	return font;
@@ -45,7 +46,7 @@ TTF_Font *loadCustomFont(char *name, int size)
 	{
 		printf("Failed to open Font %s: %s\n", name, TTF_GetError());
 
-		exit(1);
+		cleanup(1);
 	}
 
 	return font;
@@ -125,6 +126,7 @@ void drawString(char *text, int x, int y, TTF_Font *font, int centerX, int cente
 	foregroundcolour.r = r;
 	foregroundcolour.g = g;
 	foregroundcolour.b = b;
+	foregroundcolour.a = 255;
 
 	/* Use SDL_TTF to generate a string image, this returns an SDL_Surface */
 
@@ -161,10 +163,12 @@ SDL_Surface *generateTextSurface(char *text, TTF_Font *font, int fr, int fg, int
 	foregroundcolour.r = fr;
 	foregroundcolour.g = fg;
 	foregroundcolour.b = fb;
+	foregroundcolour.a = 255;
 
 	backgroundcolour.r = br;
 	backgroundcolour.g = bg;
 	backgroundcolour.b = bb;
+	backgroundcolour.a = 255;
 
 	/* Use SDL_TTF to generate a string image, this returns an SDL_Texture */
 
@@ -196,6 +200,7 @@ SDL_Surface *generateTransparentTextSurface(char *text, TTF_Font *font, int fr, 
 	foregroundcolour.r = fr;
 	foregroundcolour.g = fg;
 	foregroundcolour.b = fb;
+	foregroundcolour.a = 255;
 
 	if (blend == FALSE)
 	{

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2019 Parallel Realities
+Copyright (C) 2009-2023 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -840,7 +840,7 @@ void drawMap(int depth)
 			{
 				printf("Tile %d is NULL\n", tileID);
 
-				exit(0);
+				cleanup(0);
 			}
 			*/
 

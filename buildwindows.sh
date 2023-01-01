@@ -15,7 +15,7 @@ APPRELEASE="$2"
 
 APPDIR="$APPNAME-$APPVERSION/"
 
-DISTNAME="$APPNAME-$APPVERSION-$APPRELEASE.win32.zip"
+DISTNAME="$APPNAME-$APPVERSION-$APPRELEASE.win64.zip"
 
 #############################
 
@@ -65,7 +65,7 @@ make -f makefile.windows VERSION=$1 -j3
 
 make -f makefile.windows -j3 buildpak
 
-cp /home/mint/Windows/lib/*.dll .
+cp /opt/Windows/lib/*.dll .
 
 cp icons/edgar.ico .
 

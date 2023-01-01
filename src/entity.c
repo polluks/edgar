@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2019 Parallel Realities
+Copyright (C) 2009-2023 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -38,6 +38,7 @@ Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
 #include "system/random.h"
 #include "system/resources.h"
 
+extern Entity player;
 extern Entity *self;
 extern Game game;
 
@@ -253,8 +254,8 @@ void doEntities()
 
 void drawEntities(int depth)
 {
-	int i, drawn, removeCount;
-	EntityList *el, *prev, *el2;
+	int i, drawn;
+	EntityList *el;
 
 	/* Draw standard entities */
 
@@ -317,45 +318,6 @@ void drawEntities(int depth)
 			}
 		}
 	}
-
-	if (game.frames % 300 == 0)
-	{
-		removeCount = 0;
-
-		prev = entities;
-
-		for (el=entities->next;el!=NULL;el=el2)
-		{
-			el2 = el->next;
-
-			if (el->entity->inUse == FALSE && isReferenced(el->entity) == FALSE)
-			{
-				prev->next = el2;
-
-				removeCount++;
-
-				free(el->entity);
-
-				el->entity = NULL;
-
-				free(el);
-
-				el = NULL;
-			}
-
-			else
-			{
-				prev = prev->next;
-			}
-		}
-
-		#if DEV == 1
-		if (removeCount != 0)
-		{
-			printf("Removed %d entities taking up %d bytes\n", removeCount, (int)sizeof(Entity) * removeCount);
-		}
-		#endif
-	}
 }
 
 void removeEntity()
@@ -389,6 +351,48 @@ void removeAllSpawnedIn()
 			}
 		}
 	}
+}
+
+void removeUnreferencedEntities()
+{
+	int removeCount;
+	EntityList *el, *prev, *el2;
+	
+	removeCount = 0;
+
+	prev = entities;
+
+	for (el=entities->next;el!=NULL;el=el2)
+	{
+		el2 = el->next;
+
+		if (el->entity->inUse == FALSE && isReferenced(el->entity) == FALSE)
+		{
+			prev->next = el2;
+
+			removeCount++;
+
+			free(el->entity);
+
+			el->entity = NULL;
+
+			free(el);
+
+			el = NULL;
+		}
+
+		else
+		{
+			prev = prev->next;
+		}
+	}
+
+	#if DEV == 1
+	if (removeCount != 0)
+	{
+		printf("Removed %d entities taking up %d bytes\n", removeCount, (int)sizeof(Entity) * removeCount);
+	}
+	#endif
 }
 
 void disableSpawners(int disable)
@@ -2106,6 +2110,11 @@ static int isReferenced(Entity *e)
 		{
 			return TRUE;
 		}
+	}
+
+	if (player.head == e || player.target == e || player.standingOn == e)
+	{
+		return TRUE;
 	}
 
 	return FALSE;

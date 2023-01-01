@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2019 Parallel Realities
+Copyright (C) 2009-2023 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,6 +19,10 @@ Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
 
 #include "../headers.h"
 
+#ifdef __HAIKU__
+#include <FindDirectory.h>
+#endif
+
 #include "../audio/music.h"
 #include "../entity.h"
 #include "../event/global_trigger.h"
@@ -30,6 +34,7 @@ Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
 #include "../graphics/font.h"
 #include "../graphics/graphics.h"
 #include "../hud.h"
+#include "../init.h"
 #include "../input.h"
 #include "../inventory.h"
 #include "../map.h"
@@ -57,6 +62,9 @@ extern Game game;
 	{
 		char *userHome;
 		char dir[MAX_PATH_LENGTH];
+		#ifdef __HAIKU__
+		char path[MAX_PATH_LENGTH];
+		#endif
 		struct passwd *pass;
 
 		pass = getpwuid(geteuid());
@@ -65,13 +73,16 @@ extern Game game;
 		{
 			printf("Couldn't determine the user home directory. Exiting.\n");
 
-			exit(1);
+			cleanup(1);
 		}
 
 		userHome = pass->pw_dir;
 
 		#if MACOS == 1
 		SNPRINTF(dir, sizeof(dir), "%s/Library/Application Support", userHome);
+		#elif defined(__HAIKU__)
+		find_directory(B_USER_SETTINGS_DIRECTORY, 0, true, path, sizeof(path));
+		SNPRINTF(dir, sizeof(dir), "%s/parallelrealities", path);
 		#else
 		SNPRINTF(dir, sizeof(dir), "%s/.parallelrealities", userHome);
 		#endif
@@ -80,11 +91,14 @@ extern Game game;
 		{
 			printf("Couldn't create required directory '%s'\n", dir);
 
-			exit(1);
+			cleanup(1);
 		}
 
 		#if MACOS == 1
 		SNPRINTF(dir, sizeof(dir), "%s/Library/Application Support/Edgar", userHome);
+		#elif defined(__HAIKU__)
+		find_directory(B_USER_SETTINGS_DIRECTORY, 0, true, path, sizeof(path));
+		SNPRINTF(dir, sizeof(dir), "%s/parallelrealities/Edgar", path);
 		#else
 		SNPRINTF(dir, sizeof(dir), "%s/.parallelrealities/edgar", userHome);
 		#endif
@@ -93,11 +107,14 @@ extern Game game;
 		{
 			printf("Couldn't create required directory '%s'\n", dir);
 
-			exit(1);
+			cleanup(1);
 		}
 
 		#if MACOS == 1
 		SNPRINTF(gameSavePath, sizeof(gameSavePath), "%s/Library/Application Support/Edgar/", userHome);
+		#elif defined(__HAIKU__)
+		find_directory(B_USER_SETTINGS_DIRECTORY, 0, true, path, sizeof(path));
+		SNPRINTF(gameSavePath, sizeof(gameSavePath), "%s/parallelrealities/Edgar", path);
 		#else
 		SNPRINTF(gameSavePath, sizeof(gameSavePath), "%s/.parallelrealities/edgar/", userHome);
 		#endif
@@ -127,7 +144,7 @@ extern Game game;
         {
             printf("Couldn't create required directory '%s'\n", dir);
 
-            exit(1);
+            cleanup(1);
         }
         
         SNPRINTF(dir, sizeof(dir), "%s/parallelrealities/edgar", userHome);
@@ -136,7 +153,7 @@ extern Game game;
         {
             printf("Couldn't create required directory '%s'\n", dir);
 
-            exit(1);
+            cleanup(1);
         }
         
         SNPRINTF(gameSavePath, sizeof(gameSavePath), "%s/parallelrealities/edgar/", userHome);
@@ -1572,7 +1589,7 @@ void loadConfig()
 	{
 		showErrorAndExit("Failed to allocate a whole %ld bytes for config file...", length);
 
-		exit(1);
+		cleanup(1);
 	}
 
 	fseek(fp, 0L, SEEK_SET);
@@ -1620,7 +1637,7 @@ void saveConfig()
 	{
 		showErrorAndExit("Could not save settings: %s", strerror(errno));
 
-		exit(1);
+		cleanup(1);
 	}
 
 	writeControlsToFile(fp);
@@ -1676,7 +1693,7 @@ char **getSaveFileIndex()
 	{
 		showErrorAndExit("Failed to allocate a whole %d bytes for save data", (int)sizeof(char *) * MAX_SAVE_SLOTS);
 
-		exit(1);
+		cleanup(1);
 	}
 
 	for (i=0;i<MAX_SAVE_SLOTS;i++)
@@ -1687,7 +1704,7 @@ char **getSaveFileIndex()
 		{
 			showErrorAndExit("Failed to allocate a whole %d bytes for save data", (int)sizeof(char) * MAX_PATH_LENGTH);
 
-			exit(1);
+			cleanup(1);
 		}
 
 		entries[i][0] = '\0';

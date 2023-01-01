@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2019 Parallel Realities
+Copyright (C) 2009-2023 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -179,6 +179,8 @@ void playMapMusic()
 	Mix_PlayMusic(music, -1);
 
 	Mix_VolumeMusic(game.musicDefaultVolume * VOLUME_STEPS);
+	
+	Mix_ResumeMusic();
 }
 
 void stopMusic()

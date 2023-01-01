@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2019 Parallel Realities
+Copyright (C) 2009-2023 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -35,6 +35,7 @@ Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
 #include "../graphics/decoration.h"
 #include "../graphics/graphics.h"
 #include "../hud.h"
+#include "../init.h"
 #include "../inventory.h"
 #include "../item/key_items.h"
 #include "../map.h"
@@ -2052,7 +2053,7 @@ static void becomeTransparent()
 	{
 		printf("%s cannot become transparent!\n", self->name);
 
-		exit(1);
+		cleanup(1);
 	}
 
 	self->endX--;

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2019 Parallel Realities
+Copyright (C) 2009-2023 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -24,6 +24,7 @@ void doEntities(void);
 void drawEntities(int);
 void removeEntity(void);
 void removeAllSpawnedIn(void);
+void removeUnreferencedEntities(void);
 void disableSpawners(int);
 void doNothing(void);
 void entityDie(void);

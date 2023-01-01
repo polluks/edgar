@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2019 Parallel Realities
+Copyright (C) 2009-2023 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@ Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
 
 #include "../headers.h"
 
+#include "../init.h"
 #include "../map.h"
 #include "error.h"
 #include "random.h"
@@ -163,7 +164,7 @@ Input getBuffer()
 	{
 		printf("End of replay\n");
 
-		exit(0);
+		cleanup(0);
 	}
 
 	input = inputBuffer[bufferID];
