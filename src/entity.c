@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -472,6 +472,10 @@ void doNothing()
 
 	if (self->environment == WATER && (self->flags & FLOATS))
 	{
+		self->y = getWaterTop(self->x, self->y);
+		
+		self->y = self->y - TILE_SIZE;
+		
 		self->action = &floatLeftToRight;
 
 		self->endX = self->dirX = 1.0;
@@ -1477,7 +1481,7 @@ void writeEntitiesToFile(FILE *fp)
 			fprintf(fp, "HEALTH %d\n", self->health);
 			fprintf(fp, "DAMAGE %d\n", self->damage);
 			fprintf(fp, "SPAWNTIME %d\n", self->spawnTime);
-			fprintf(fp, "SPEED %0.2f\n", self->speed); /* Save the original speed, not the current speed */
+			fprintf(fp, "SPEED %0.2f\n", self->originalSpeed); /* Save the original speed, not the current speed */
 			fprintf(fp, "WEIGHT %0.2f\n", self->originalWeight); /* Save the original weight, not the current weight */
 			fprintf(fp, "OBJECTIVE_NAME %s\n", self->objectiveName);
 			fprintf(fp, "REQUIRES %s\n", self->requires);
@@ -1663,7 +1667,7 @@ static void scriptEntityMoveToTarget()
 		showErrorAndExit("%s has a speed of 0 and will not move!", self->objectiveName);
 	}
 
-	if (abs(self->x - self->targetX) > self->speed)
+	if (fabsf(self->x - self->targetX) > self->speed)
 	{
 		self->dirX = (self->x < self->targetX ? self->speed : -self->speed);
 	}
@@ -1678,7 +1682,7 @@ static void scriptEntityMoveToTarget()
 		self->targetY = self->y;
 	}
 
-	if (abs(self->y - self->targetY) > self->speed)
+	if (fabsf(self->y - self->targetY) > self->speed)
 	{
 		self->dirY = (self->y < self->targetY ? self->speed : -self->speed);
 	}
@@ -1743,7 +1747,7 @@ static void entityMoveToTarget()
 		showErrorAndExit("%s has a speed of 0 and will not move!", self->objectiveName);
 	}
 
-	if (abs(self->x - self->targetX) > self->speed)
+	if (fabsf(self->x - self->targetX) > self->speed)
 	{
 		self->dirX = (self->x < self->targetX ? self->speed : -self->speed);
 	}
@@ -1760,7 +1764,7 @@ static void entityMoveToTarget()
 		self->targetY = self->y;
 	}
 
-	if (abs(self->y - self->targetY) > self->speed)
+	if (fabsf(self->y - self->targetY) > self->speed)
 	{
 		self->dirY = (self->y < self->targetY ? self->speed : -self->speed);
 	}
@@ -1840,7 +1844,7 @@ void doTeleport()
 	float speed;
 	Entity *e;
 
-	if (abs(self->x - self->targetX) < TELEPORT_SPEED && abs(self->y - self->targetY) < TELEPORT_SPEED)
+	if (fabsf(self->x - self->targetX) < TELEPORT_SPEED && fabsf(self->y - self->targetY) < TELEPORT_SPEED)
 	{
 		self->flags &= ~(NO_DRAW|HELPLESS|TELEPORTING);
 

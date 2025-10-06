@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -1216,8 +1216,8 @@ static void swordDropTeleportAway()
 			showErrorAndExit("Grimlore cannot find target");
 		}
 
-		d1 = abs(player.x - t1->x);
-		d2 = abs(player.x - t2->x);
+		d1 = fabsf(player.x - t1->x);
+		d2 = fabsf(player.x - t2->x);
 
 		if (d1 < d2)
 		{
@@ -1869,7 +1869,7 @@ static void flameWait()
 	{
 		startX = self->face == LEFT ? self->endX : self->startX;
 
-		if (collision(player.x, player.y, player.w, player.h, startX, self->y, abs(self->startX - self->endX), self->h) == 1)
+		if (collision(player.x, player.y, player.w, player.h, startX, self->y, fabsf(self->startX - self->endX), self->h) == 1)
 		{
 			e = addProjectile("enemy/fireball", self->head, 0, 0, (self->face == LEFT ? -self->dirX : self->dirX), 0);
 

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -165,7 +165,7 @@ static void suckIn()
 {
 	Entity *e;
 
-	if (fabs(self->target->x - self->targetX) > fabs(4))
+	if (fabs(self->target->x - self->targetX) > 4)
 	{
 		self->target->x += self->target->x > self->targetX ? -4 : 4;
 

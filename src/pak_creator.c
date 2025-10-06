@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,7 +17,13 @@ along with this program; if not, write to the Free Software
 Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
 */
 
-#include "headers.h"
+#include <dirent.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <zlib.h>
+#include "defs.h"
+#include "system/pak_data.h"
 
 FILE *pak;
 int fileID;
@@ -359,7 +365,9 @@ static void testPak(char *pakFile)
 		cleanup(1);
 	}
 
-	fseek(fp, -(sizeof(int32_t) + sizeof(int32_t)), SEEK_END);
+	offset = sizeof(int32_t) + sizeof(int32_t);
+
+	fseek(fp, -offset, SEEK_END);
 
 	fread(&offset, sizeof(int32_t), 1, fp);
 	fread(&fileCount, sizeof(int32_t), 1, fp);

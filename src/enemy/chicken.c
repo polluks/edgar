@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -182,7 +182,7 @@ static void moveToFood()
 		self->action = &wander;
 	}
 
-	else if (abs(self->x + (self->face == RIGHT ? self->w : 0) - self->target->x) > self->speed)
+	else if (fabsf(self->x + (self->face == RIGHT ? self->w : 0) - self->target->x) > self->speed)
 	{
 		self->dirX = self->target->x < self->x ? -self->speed : self->speed;
 

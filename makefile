@@ -1,4 +1,4 @@
-VERSION = 1.36
+VERSION = 1.37
 RELEASE = 1
 DEV = 0
 PAK_FILE = edgar.pak
@@ -7,6 +7,13 @@ ICONS = icons/
 MAN = man/
 UNIX = 1
 MACOS = 0
+
+PKG_CONFIG ?= pkg-config
+
+BUILD_CC := $(CC)
+BUILD_CFLAGS := $(CFLAGS)
+BUILD_LDFLAGS := $(LDFLAGS)
+BUILD_PKG_CONFIG := $(PKG_CONFIG)
 
 ifeq ($(UNIX),0)
 PROG      = edgar.exe
@@ -38,9 +45,12 @@ else
 DATA_DIR = $(PREFIX)/share/games/edgar/
 endif
 
-CFLAGS += `sdl2-config --cflags` -Wall -pedantic
+CFLAGS += `$(PKG_CONFIG) --cflags sdl2 SDL2_mixer SDL2_image SDL2_ttf zlib libpng` -Wall -pedantic
+BUILD_CFLAGS += `$(BUILD_PKG_CONFIG) --cflags zlib`
 ifeq ($(DEV),1)
 CFLAGS += -Werror -g
+else
+LDFLAGS += -s
 endif
 
 DEFINES = -DVERSION=$(VERSION) -DRELEASE=$(RELEASE) -DDEV=$(DEV) -DINSTALL_PATH=\"$(DATA_DIR)\" -DLOCALE_DIR=\"$(LOCALE_DIR)\" -DUNIX=$(UNIX)
@@ -48,7 +58,8 @@ ifndef NO_PAK
 DEFINES += -DPAK_FILE=\"$(PAK_FILE)\"
 endif
 
-LDFLAGS += `sdl2-config --libs` -lSDL2_mixer -lSDL2_image -lSDL2_ttf -lz -lm -lpng
+LDFLAGS += `$(PKG_CONFIG) --libs sdl2 SDL2_mixer SDL2_image SDL2_ttf zlib libpng` -lm
+BUILD_LDFLAGS += `$(BUILD_PKG_CONFIG) --libs zlib`
 
 TILE_OBJS  = tile_creator.o
 PAK_OBJS   = pak_creator.o
@@ -104,11 +115,14 @@ endif
 all : $(PROG) makefile.dep $(ED_PROG) $(PAK_PROG) $(LOCALE_MO) $(PO_PROG)
 
 makefile.dep : src/*/*.h src/*.h
-	for i in src/*.c src/*/*.c; do $(CC) -MM "$${i}"; done > $@
+	for i in src/*.c src/*/*.c; do $(CC) $(CFLAGS) -MM "$${i}"; done > $@
 
 # compiling other source files.
-$(MAIN_OBJS) $(CORE_OBJS) $(EDIT_OBJS) $(TITLE_OBJS) $(PAK_OBJS) $(PO_OBJS) $(TILE_OBJS):
-	$(CC) $(CFLAGS) $(DEFINES) -c -s $<
+$(MAIN_OBJS) $(CORE_OBJS) $(EDIT_OBJS) $(TITLE_OBJS) $(PO_OBJS) $(TILE_OBJS):
+	$(CC) $(CFLAGS) $(DEFINES) -c $<
+
+$(PAK_OBJS):
+	$(BUILD_CC) $(BUILD_CFLAGS) $(DEFINES) -c $<
 
 %.mo: %.po
 	msgfmt -c -o $@ $<
@@ -123,7 +137,7 @@ $(ED_PROG): $(EDIT_OBJS) $(CORE_OBJS)
 
 # linking the program.
 $(PAK_PROG): $(PAK_OBJS)
-	$(CC) $(PAK_OBJS) -o $(PAK_PROG) $(LDFLAGS)
+	$(BUILD_CC) $(PAK_OBJS) -o $(PAK_PROG) $(BUILD_LDFLAGS)
 
 # linking the program.
 $(PO_PROG): $(PO_OBJS)

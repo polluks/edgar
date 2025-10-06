@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -211,7 +211,7 @@ static void appleWait()
 	{
 		self->x += self->dirX;
 
-		if (abs(self->startX - self->x) > 1)
+		if (fabsf(self->startX - self->x) > 1)
 		{
 			self->dirX *= -1;
 		}

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -987,7 +987,7 @@ void centerEntityOnMap()
 		}
 	}
 
-	if (abs(map.cameraX - map.startX) > speed)
+	if (fabsf(map.cameraX - map.startX) > speed)
 	{
 		map.cameraX += map.cameraX < map.startX ? speed : -speed;
 	}
@@ -997,7 +997,7 @@ void centerEntityOnMap()
 		map.cameraX = map.startX;
 	}
 
-	if (abs(map.cameraY - map.startY) > speed)
+	if (fabsf(map.cameraY - map.startY) > speed)
 	{
 		if (map.cameraY < map.startY)
 		{

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -181,7 +181,7 @@ static void chasePlayer()
 		addDust();
 	}
 
-	if (self->dirX == 0 && abs(self->endX) > 2)
+	if (self->dirX == 0 && fabsf(self->endX) > 2)
 	{
 		self->action = &idle;
 

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -149,7 +149,7 @@ static void touch(Entity *other)
 {
 	if (self->active == TRUE && self->target == NULL && strcmpignorecase(other->name, self->objectiveName) == 0)
 	{
-		if (abs(other->x - self->x - self->w / 2 + other->w / 2) <= 4)
+		if (fabsf(other->x - self->x - self->w / 2 + other->w / 2) <= 4)
 		{
 			self->target = other;
 

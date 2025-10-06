@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -487,7 +487,7 @@ static void attackPlayer()
 
 	facePlayer();
 
-	if ((self->face == LEFT && abs(self->x - (player.x + player.w)) < 24) || (self->face == RIGHT && abs(player.x - (self->x + self->w)) < 24))
+	if ((self->face == LEFT && fabsf(self->x - (player.x + player.w)) < 24) || (self->face == RIGHT && fabsf(player.x - (self->x + self->w)) < 24))
 	{
 		setEntityAnimation(self, "STAND");
 

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,6 +18,7 @@ Foundation, 51 Franklin Street, Suite 500, Boston, MA 02110-1335, USA.
 */
 
 #include "defs.h"
+#include "system/pak_data.h"
 
 typedef struct Texture
 {
@@ -333,12 +334,6 @@ typedef struct Grid
 	EntityList listHead;
 	struct Grid *next;
 } Grid;
-
-typedef struct FileData
-{
-	char filename[MAX_FILE_LENGTH];
-	int32_t fileSize, compressedSize, offset;
-} FileData;
 
 typedef struct ContinueData
 {

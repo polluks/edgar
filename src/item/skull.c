@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -188,7 +188,7 @@ static void followPlayer()
 
 	/* Position above the player */
 
-	if (abs(self->x - self->targetX) <= abs(self->dirX))
+	if (fabsf(self->x - self->targetX) <= fabsf(self->dirX))
 	{
 		self->x = self->targetX;
 

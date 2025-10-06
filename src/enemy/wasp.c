@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -87,7 +87,7 @@ static void flyToTarget()
 
 	self->dirY = cos(DEG_TO_RAD(self->thinkTime));
 
-	if (abs(self->x - self->targetX) > self->speed)
+	if (fabsf(self->x - self->targetX) > self->speed)
 	{
 		self->dirX = (self->x < self->targetX ? self->speed : -self->speed);
 	}

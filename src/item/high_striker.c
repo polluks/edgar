@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -140,7 +140,7 @@ static void touch(Entity *other)
 
 		dirY *= 14;
 
-		if (abs(dirY) > self->maxHealth && self->maxThinkTime == 0)
+		if (fabsf(dirY) > self->maxHealth && self->maxThinkTime == 0)
 		{
 			self->maxHealth = dirY > 14 ? 14 : dirY;
 

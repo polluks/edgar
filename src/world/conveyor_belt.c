@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2009-2023 Parallel Realities
+Copyright (C) 2009-2024 Parallel Realities
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -79,14 +79,14 @@ static void entityWait()
 			{
 				self->dirX = self->face == LEFT ? -fabs(self->speed) : self->speed;
 
-				self->frameSpeed = abs(self->frameSpeed);
+				self->frameSpeed = fabsf(self->frameSpeed);
 			}
 
 			else
 			{
 				self->dirX = self->face == RIGHT ? -fabs(self->speed) : self->speed;
 
-				self->frameSpeed = -abs(self->frameSpeed);
+				self->frameSpeed = -fabsf(self->frameSpeed);
 			}
 		}
 
@@ -119,14 +119,14 @@ static void init()
 		{
 			self->dirX = self->face == LEFT ? -fabs(self->speed) : self->speed;
 
-			self->frameSpeed = abs(self->frameSpeed);
+			self->frameSpeed = fabsf(self->frameSpeed);
 		}
 
 		else
 		{
 			self->dirX = self->face == RIGHT ? -fabs(self->speed) : self->speed;
 
-			self->frameSpeed = -abs(self->frameSpeed);
+			self->frameSpeed = -fabsf(self->frameSpeed);
 		}
 	}
 
